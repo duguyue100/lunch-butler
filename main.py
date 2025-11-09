@@ -4,6 +4,7 @@ import requests
 from datetime import datetime
 
 from parse import parse_url
+from openai import OpenAI
 
 
 SLACK_BOT_TOKEN = os.getenv("SLACK_BOT_TOKEN")
@@ -36,7 +37,7 @@ def get_menu_data() -> list[dict]:
             "content": "https://app.food2050.ch/de/v2/zfv/zhdk,toni-areal/mensa-molki/mittagsverpflegung/menu/weekly",
         },
         {
-            "name": "technopark",
+            "name": "Technopark",
             "type": "url",
             "content": "https://app.food2050.ch/de/v2/zfv/technopark-zurich/technopark/mittagsverpflegung/menu/weekly",
         },
@@ -94,7 +95,15 @@ def generate_lunch_message() -> str:
 
     system_prompt_filled = SYSTEM_PROMPT.format(DATE=date_str, MENU_DATA=menu)
 
-    return system_prompt_filled
+    client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+    response = client.chat.completions.create(
+        model="gpt-4o",
+        messages=[
+            {"role": "user", "content": system_prompt_filled},
+        ],
+    )
+
+    return str(response.choices[0].message.content)
 
 
 def post_to_slack(text: str):
