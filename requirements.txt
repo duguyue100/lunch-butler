@@ -1,5 +1,4 @@
 requests
 openai
 markdownify
-PyMuPDF
 camelot-py
