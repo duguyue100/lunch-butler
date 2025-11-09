@@ -5,6 +5,14 @@ import requests
 SLACK_BOT_TOKEN = os.getenv("SLACK_BOT_TOKEN")
 SLACK_CHANNEL_ID = os.getenv("SLACK_CHANNEL_ID")
 
+system_prompt = """You are the official Lunch Butler of LatticeFlow and responsible for providing daily lunch suggestions to the team.
+
+Below is a list of available lunch options from various cafeterias, restaurants, and food trucks in the area.
+{MENU_DATA}
+
+Your task is to generate a friendly and engaging Slack message that lists today's lunch options in a clear and appealing manner.
+"""
+
 
 def get_menu_data() -> list[dict]:
     # Minimum example — replace with scraping or LLM later
@@ -12,12 +20,12 @@ def get_menu_data() -> list[dict]:
         {
             "name": "Toni-Areal",
             "type": "url",
-            "content": "https://www.zfv.ch/de/essen-gehen/gastronomie-im-toni-areal#menu",
+            "content": "https://app.food2050.ch/de/v2/zfv/zhdk,toni-areal/mensa-molki/mittagsverpflegung/menu/weeklyh",
         },
         {
             "name": "technopark",
             "type": "url",
-            "content": "https://www.zfv.ch/de/essen-gehen/gastronomie-im-technopark-zuerich",
+            "content": "https://app.food2050.ch/de/v2/zfv/technopark-zurich/technopark/mittagsverpflegung/menu/weekly",
         },
         {
             "name": "Jao Praya (Thai Restaurant)",
