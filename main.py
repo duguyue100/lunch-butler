@@ -115,7 +115,7 @@ def post_to_slack(text: str):
         "Authorization": f"Bearer {SLACK_BOT_TOKEN}",
         "Content-Type": "application/json",
     }
-    payload = {"channel": SLACK_CHANNEL_ID, "text": text}
+    payload = {"channel": SLACK_CHANNEL_ID, "text": text, "mrkdwn": True}
     r = requests.post(url, json=payload, headers=headers)
     print("Slack response:", r.text)
 
