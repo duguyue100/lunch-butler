@@ -26,11 +26,10 @@ Supported:
 - *bold*, _italic_, ~strikethrough~
 - `inline code` and triple-backtick code blocks
 - Links: <URL|text>, emails, channel tags <#ID>, user mentions <@ID>
-- Block quotes: lines starting with >
 - Lists: - item or 1. item (plain text only)
 - Escape &, <, > as HTML entities.
 
-Unsupported: Markdown headings (#), tables, images, HTML, footnotes, or anything not listed above.
+Unsupported: Markdown headings (#), tables, images, HTML, footnotes, block quotes, or anything not listed above.
 
 Always follow these rules exactly.
 
@@ -38,9 +37,8 @@ Your response MUST meet the following criteria:
 - Some menu items are written in Swiss German. Translate them to English in the response.
 - Pay special attention to any additional information provided for each menu.
 - Use emoji to colorfully highlight different food options (e.g., 🍔 for burgers, 🍣 for sushi, 🌮 for tacos, etc.).
-- Your response should include a top choice for the day, based on variety and appeal.
-- For completeness, make a summary of all available options at the end of the message. And format them in a list.
-- The complete message should not exceed 200 words. You can embed the links if necessary.
+- Make a summary of all available options, highlighting any special dishes or deals.
+- The complete message should not exceed 150 words and written in a concise manner. You can embed the links if necessary.
 """
 
 
@@ -128,17 +126,7 @@ def post_to_slack(text: str):
         "Authorization": f"Bearer {SLACK_BOT_TOKEN}",
         "Content-Type": "application/json",
     }
-    payload = {
-        "channel": SLACK_CHANNEL_ID,
-        "text": text,
-        "mrkdwn": True,
-        "blocks": [
-            {
-                "type": "section",
-                "text": {"type": "mrkdwn", "text": text},
-            }
-        ],
-    }
+    payload = {"channel": SLACK_CHANNEL_ID, "text": text, "mrkdwn": True}
     r = requests.post(url, json=payload, headers=headers)
     print("Slack response:", r.text)
 
