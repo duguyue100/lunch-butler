@@ -26,6 +26,8 @@ Your task is to generate a friendly and engaging Slack message that lists TODAY'
 - Use emoji to colorfully highlight different food options (e.g., 🍔 for burgers, 🍣 for sushi, 🌮 for tacos, etc.).
 - Your response should include a top choice for the day, based on variety and appeal.
 - For completeness, make a summary of all available options at the end of the message. And format them in a list.
+- The response should be a well-structured **Slack** message, meaning that some markdown formatting such as sectioning is not supported.
+- The complete message should not exceed 200 words. You can embed the links if necessary.
 """
 
 
