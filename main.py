@@ -5,6 +5,7 @@ from datetime import datetime
 
 from parse import parse_url
 
+
 SLACK_BOT_TOKEN = os.getenv("SLACK_BOT_TOKEN")
 SLACK_CHANNEL_ID = os.getenv("SLACK_CHANNEL_ID")
 
@@ -13,9 +14,16 @@ SYSTEM_PROMPT = """You are the official Lunch Butler of LatticeFlow and responsi
 Today is {DATE}.
 
 Below is a list of available lunch options from various cafeterias, restaurants, and food trucks in the area.
+Each option is a section started by "# Location:" followed by the name of the place, and then the menu items or a URL to the menu.
+
 {MENU_DATA}
 
-Your task is to generate a friendly and engaging Slack message that lists today's lunch options in a clear and appealing manner.
+Your task is to generate a friendly and engaging Slack message that lists TODAY's lunch options in a clear and appealing manner. Your response MUST meet the following criteria:
+- Some menu items are written in Swiss German. Translate them to English in the response.
+- Pay special attention to any additional information provided for each menu.
+- Use emoji to colorfully highlight different food options (e.g., 🍔 for burgers, 🍣 for sushi, 🌮 for tacos, etc.).
+- Your response should include a top choice for the day, based on variety and appeal.
+- For completeness, make a summary of all available options at the end of the message. And format them in a list.
 """
 
 
@@ -25,7 +33,7 @@ def get_menu_data() -> list[dict]:
         {
             "name": "Toni-Areal",
             "type": "url",
-            "content": "https://app.food2050.ch/de/v2/zfv/zhdk,toni-areal/mensa-molki/mittagsverpflegung/menu/weeklyh",
+            "content": "https://app.food2050.ch/de/v2/zfv/zhdk,toni-areal/mensa-molki/mittagsverpflegung/menu/weekly",
         },
         {
             "name": "technopark",
@@ -57,13 +65,18 @@ def get_menu_data() -> list[dict]:
 
 
 def prepare_menu_item(item: dict) -> str:
+    print("Parsing menu item:", item["name"])
+    menu_str = f"# Location: {item['name']}\n"
+    if "additional_info" in item:
+        menu_str += f"**Note:** {item['additional_info']}\n\n"
     if item["type"] == "url":
         parsed_content = parse_url(item["content"])
-        return f"{item['name']}:\n{parsed_content}"
+
+        menu_str += parsed_content
     elif item["type"] == "text":
-        return f"{item['name']}: {item['content']}"
-    else:
-        return f"{item['name']}: (No details available)"
+        menu_str += item["content"]
+
+    return menu_str
 
 
 def prepare_menu(menu: list[dict]) -> str:
@@ -97,4 +110,5 @@ def post_to_slack(text: str):
 
 if __name__ == "__main__":
     msg = generate_lunch_message()
+    print(msg)
     post_to_slack(msg)
