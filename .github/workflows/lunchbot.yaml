@@ -26,5 +26,5 @@ jobs:
       - name: Run lunch bot
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
-          SLACK_CHANNEL_ID: ${{ secrets.SLACK_DM_USER_IDS }}
+          SLACK_CHANNEL_ID: ${{ secrets.SLACK_CHANNEL_ID}}
         run: python main.py
