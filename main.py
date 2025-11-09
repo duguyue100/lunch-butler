@@ -1,11 +1,14 @@
 # main.py
 import os
 import requests
+from datetime import datetime
 
 SLACK_BOT_TOKEN = os.getenv("SLACK_BOT_TOKEN")
 SLACK_CHANNEL_ID = os.getenv("SLACK_CHANNEL_ID")
 
-system_prompt = """You are the official Lunch Butler of LatticeFlow and responsible for providing daily lunch suggestions to the team.
+SYSTEM_PROMPT = """You are the official Lunch Butler of LatticeFlow and responsible for providing daily lunch suggestions to the team.
+
+Today is {DATE}.
 
 Below is a list of available lunch options from various cafeterias, restaurants, and food trucks in the area.
 {MENU_DATA}
@@ -50,17 +53,15 @@ def get_menu_data() -> list[dict]:
     ]
 
 
-def generate_lunch_message():
+def generate_lunch_message() -> str:
     menu = get_menu_data()
     items = "\n".join(f"- {item}" for item in menu)
 
-    return f"""🥡 *Today's Lunch Ideas*
+    date_str = datetime.now().strftime("%B %d, %Y")
 
-Here are some options for today:
-{items}
+    system_prompt_filled = SYSTEM_PROMPT.format(DATE=date_str, MENU_DATA=items)
 
-Bon appetit! 😋
-"""
+    return system_prompt_filled
 
 
 def post_to_slack(text: str):
