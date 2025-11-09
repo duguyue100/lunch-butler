@@ -58,12 +58,7 @@ def get_menu_data() -> list[dict]:
         {
             "name": "Jao Praya (Thai Restaurant)",
             "type": "text",
-            "content": "Pad Thai, Green Curry, Tom Yum Soup",
-        },
-        {
-            "name": "LianHua (Chinese Restaurant)",
-            "type": "text",
-            "content": "Kung Pao Chicken, Sweet and Sour Pork, Fried Rice",
+            "content": "Thai food buffet with options like fried rice, curry, spring rolls, etc.",
         },
         {
             "name": "Lunch 5",
@@ -72,9 +67,9 @@ def get_menu_data() -> list[dict]:
             "additional_info": "The dishes in the rows 'immer gut' and below available every day.",
         },
         {
-            "name": "Food Trucks",
-            "type": "text",
-            "content": "Tacos Truck, Vegan Burger Truck, Sushi Truck",
+            "name": "Antonio",
+            "type": "url",
+            "content": "https://www.pizzeria-antonio.ch/speisekarten",
         },
     ]
 
