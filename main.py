@@ -67,16 +67,19 @@ def prepare_menu_item(item: dict) -> str:
 
 
 def prepare_menu(menu: list[dict]) -> str:
-    pass
+    menu_str = ""
+    for item in menu:
+        menu_str += prepare_menu_item(item) + "\n\n"  # Extra newline for spacing
+
+    return menu_str.strip()
 
 
 def generate_lunch_message() -> str:
-    menu = get_menu_data()
-    items = "\n".join(f"- {item}" for item in menu)
+    menu = prepare_menu(get_menu_data())
 
     date_str = datetime.now().strftime("%B %d, %Y")
 
-    system_prompt_filled = SYSTEM_PROMPT.format(DATE=date_str, MENU_DATA=items)
+    system_prompt_filled = SYSTEM_PROMPT.format(DATE=date_str, MENU_DATA=menu)
 
     return system_prompt_filled
 
