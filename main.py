@@ -3,6 +3,8 @@ import os
 import requests
 from datetime import datetime
 
+from parse import parse_url
+
 SLACK_BOT_TOKEN = os.getenv("SLACK_BOT_TOKEN")
 SLACK_CHANNEL_ID = os.getenv("SLACK_CHANNEL_ID")
 
@@ -44,6 +46,7 @@ def get_menu_data() -> list[dict]:
             "name": "Lunch 5",
             "type": "url",
             "content": "http://www.lunch-5.ch/uploads/menuplan.pdf",
+            "additional_info": "The dishes in the rows 'immer gut' and below available every day.",
         },
         {
             "name": "Food Trucks",
@@ -51,6 +54,20 @@ def get_menu_data() -> list[dict]:
             "content": "Tacos Truck, Vegan Burger Truck, Sushi Truck",
         },
     ]
+
+
+def prepare_menu_item(item: dict) -> str:
+    if item["type"] == "url":
+        parsed_content = parse_url(item["content"])
+        return f"{item['name']}:\n{parsed_content}"
+    elif item["type"] == "text":
+        return f"{item['name']}: {item['content']}"
+    else:
+        return f"{item['name']}: (No details available)"
+
+
+def prepare_menu(menu: list[dict]) -> str:
+    pass
 
 
 def generate_lunch_message() -> str:
