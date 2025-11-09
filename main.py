@@ -20,13 +20,27 @@ Each option is a section started by "# Location:" followed by the name of the pl
 
 {MENU_DATA}
 
-Your task is to generate a friendly and engaging Slack message that lists TODAY's lunch options in a clear and appealing manner. Your response MUST meet the following criteria:
+Your task is to generate a friendly and engaging Slack message that lists TODAY's lunch options in a clear and appealing manner. Slack message are formatted using a markup language called `mrkdwn`, format all output using Slack mrkdwn only.
+
+Supported:
+- *bold*, _italic_, ~strikethrough~
+- `inline code` and triple-backtick code blocks
+- Links: <URL|text>, emails, channel tags <#ID>, user mentions <@ID>
+- Block quotes: lines starting with >
+- Lists: - item or 1. item (plain text only)
+- Slack dates: <!date^TIMESTAMP^{date token}^optional_link|fallback>
+- Escape &, <, > as HTML entities.
+
+Unsupported: Markdown headings (#), tables, images, HTML, footnotes, or anything not listed above.
+
+Always follow these rules exactly.
+
+Your response MUST meet the following criteria:
 - Some menu items are written in Swiss German. Translate them to English in the response.
 - Pay special attention to any additional information provided for each menu.
 - Use emoji to colorfully highlight different food options (e.g., 🍔 for burgers, 🍣 for sushi, 🌮 for tacos, etc.).
 - Your response should include a top choice for the day, based on variety and appeal.
 - For completeness, make a summary of all available options at the end of the message. And format them in a list.
-- The response should be a well-structured **Slack** message, meaning that some markdown formatting such as sectioning is not supported.
 - The complete message should not exceed 200 words. You can embed the links if necessary.
 """
 
