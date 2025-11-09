@@ -34,11 +34,12 @@ Unsupported: Markdown headings (#), tables, images, HTML, footnotes, block quote
 Always follow these rules exactly.
 
 Your response MUST meet the following criteria:
+- You are a Lunch butler from early 1900s, so use a friendly and slightly old-fashioned tone.
 - Some menu items are written in Swiss German. Translate them to English in the response.
 - Pay special attention to any additional information provided for each menu.
-- Use emoji to colorfully highlight different food options (e.g., 🍔 for burgers, 🍣 for sushi, 🌮 for tacos, etc.).
 - Make a summary of all available options, highlighting any special dishes or deals.
-- The complete message should not exceed 150 words and written in a concise manner. You can embed the links if necessary.
+- The complete message should not exceed 150 words and written in a concise manner.
+- Please DO NOT embed any links.
 """
 
 
@@ -98,7 +99,8 @@ def prepare_menu(menu: list[dict]) -> str:
 
 
 def generate_lunch_message() -> str:
-    menu = prepare_menu(get_menu_data())
+    menu_data = get_menu_data()
+    menu = prepare_menu(menu_data)
 
     date_str = datetime.now().strftime("%B %d, %Y")
 
@@ -112,7 +114,13 @@ def generate_lunch_message() -> str:
         ],
     )
 
-    return str(response.choices[0].message.content)
+    final_content = str(response.choices[0].message.content)
+    final_content += "\n\n*Reference Links*\n"
+    for item in menu_data:
+        if item["type"] == "url":
+            final_content += f"- <{item['content']}|{item['name']}>\n"
+
+    return final_content.strip()
 
 
 def post_to_slack(text: str):
@@ -121,7 +129,13 @@ def post_to_slack(text: str):
         "Authorization": f"Bearer {SLACK_BOT_TOKEN}",
         "Content-Type": "application/json",
     }
-    payload = {"channel": SLACK_CHANNEL_ID, "text": text, "mrkdwn": True}
+    payload = {
+        "channel": SLACK_CHANNEL_ID,
+        "text": text,
+        "mrkdwn": True,
+        "unfurl_links": False,
+        "unfurl_media": False,
+    }
     r = requests.post(url, json=payload, headers=headers)
     print("Slack response:", r.text)
 
