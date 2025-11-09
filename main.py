@@ -28,7 +28,6 @@ Supported:
 - Links: <URL|text>, emails, channel tags <#ID>, user mentions <@ID>
 - Block quotes: lines starting with >
 - Lists: - item or 1. item (plain text only)
-- Slack dates: <!date^TIMESTAMP^{date token}^optional_link|fallback>
 - Escape &, <, > as HTML entities.
 
 Unsupported: Markdown headings (#), tables, images, HTML, footnotes, or anything not listed above.
