@@ -1,0 +1,30 @@
+name: Daily Lunch Bot
+
+# Trigger automatically and manually
+on:
+  schedule:
+    # Run every weekday at 12:45 PM Zurich (approx. 11:45 UTC)
+    - cron: "45 11 * * 1-5"
+  workflow_dispatch: {}
+
+jobs:
+  run-lunchbot:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run lunch bot
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+          SLACK_CHANNEL_ID: ${{ secrets.SLACK_DM_USER_IDS }}
+        run: python main.py
