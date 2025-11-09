@@ -9,6 +9,7 @@ from openai import OpenAI
 
 SLACK_BOT_TOKEN = os.getenv("SLACK_BOT_TOKEN")
 SLACK_CHANNEL_ID = os.getenv("SLACK_CHANNEL_ID")
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 
 SYSTEM_PROMPT = """You are the official Lunch Butler of LatticeFlow and responsible for providing daily lunch suggestions to the team.
 
@@ -95,7 +96,7 @@ def generate_lunch_message() -> str:
 
     system_prompt_filled = SYSTEM_PROMPT.format(DATE=date_str, MENU_DATA=menu)
 
-    client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+    client = OpenAI(api_key=OPENAI_API_KEY)
     response = client.chat.completions.create(
         model="gpt-4o",
         messages=[
