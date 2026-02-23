@@ -4,7 +4,7 @@ name: Daily Lunch Bot
 on:
   schedule:
     # Run every weekday at 12:45 PM Zurich (approx. 11:45 UTC)
-    - cron: "45 11 * * 1-5"
+    - cron: "30 11 * * 1-5"
   workflow_dispatch: {}
 
 jobs:
