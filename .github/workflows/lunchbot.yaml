@@ -3,8 +3,8 @@ name: Daily Lunch Bot
 # Trigger automatically and manually
 on:
   schedule:
-    # Run every weekday at 12:45 PM Zurich (approx. 11:45 UTC)
-    - cron: "30 11 * * 1-5"
+    # Run every weekday at 12:26 PM Zurich (approx. 11:26 UTC)
+    - cron: "26 11 * * 1-5"
   workflow_dispatch: {}
 
 jobs:
